@@ -2,6 +2,7 @@ package com.spring.spring6webapp.domain;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -10,11 +11,13 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)// database will generate the id
     private long id;
-
     private String title;
     private String isbn;
 
-    private Set<Author> authors;
+@ManyToMany
+@JoinTable(name="author_book", joinColumns = @JoinColumn(name="book_id"),
+        inverseJoinColumns = @JoinColumn(name="author_id"))
+    private Set<Author> authors = new HashSet<>();
 
     @Override
     public String toString() {
@@ -24,29 +27,6 @@ public class Book {
                 ", isbn='" + isbn + '\'' +
                 ", authors=" + authors +
                 '}';
-    }
-
-    @Override
-    public final boolean equals(Object o) {
-        if (!(o instanceof Book book)) return false;
-
-        return id == book.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Long.hashCode(id);
-    }
-
-    @ManyToMany
-    @JoinTable(name="author_book", joinColumns = @JoinColumn(name="book_id"),
-               inverseJoinColumns = @JoinColumn(name= "author_id"))
-    public Set<Author> getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(Set<Author> authors) {
-        this.authors = authors;
     }
 
     public long getId() {
@@ -71,5 +51,13 @@ public class Book {
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
+    }
+
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
     }
 }
