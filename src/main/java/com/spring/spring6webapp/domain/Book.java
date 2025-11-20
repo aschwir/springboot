@@ -67,7 +67,9 @@ public class Book {
     public Publisher getPublisher() {
         return publisher;
     }
-    public void setPublisher(Publisher publisher) {}
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
+    }
 
 
 }

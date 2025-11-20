@@ -24,23 +24,6 @@ public class BootstrapData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
-        Author Eric = new Author();
-        Eric.setFirstName("Eric");
-        Eric.setLastName("Smith");
-
-        Author Rod = new Author();
-        Eric.setFirstName("Rod");
-        Eric.setLastName("Washington");
-
-        Book ddd = new Book();
-        ddd.setTitle("Domain Driven Design");
-        ddd.setIsbn("123456");
-
-        Book noEJB = new Book();
-        noEJB.setTitle("J2ee Development without EJ8");
-        noEJB.setIsbn("789123");
-
         Publisher DomainPublishing = new Publisher();
         DomainPublishing.setName("Domain Publishing" );
         DomainPublishing.setAddress("111 2nd street");
@@ -48,24 +31,39 @@ public class BootstrapData implements CommandLineRunner {
         DomainPublishing.setState("Florida");
         DomainPublishing.setZip("45678");
 
-        Author ericSaved = authorRepository.save(Eric);
-        Author rodSaved = authorRepository.save(Rod);
-        Book dddSaved = bookRepository.save(ddd);
-        Book noEJBSaved = bookRepository.save(noEJB);
         Publisher DomainPublishingSaved = publisherRepository.save(DomainPublishing);
 
-        dddSaved.setPublisher(DomainPublishingSaved);
-        noEJBSaved.setPublisher(DomainPublishingSaved);
 
-        ericSaved.getBooks().add(dddSaved);
-        rodSaved.getBooks().add(noEJBSaved);
-        dddSaved.getAuthors().add(ericSaved);
-        noEJBSaved.getAuthors().add(rodSaved);
+        Author Eric = new Author();
+        Eric.setFirstName("Eric");
+        Eric.setLastName("Smith");
 
-        authorRepository.save(ericSaved);
-        authorRepository.save(rodSaved);
+        Book ddd = new Book();
+        ddd.setTitle("Domain Driven Design");
+        ddd.setIsbn("123456");
+
+        ddd.setPublisher(DomainPublishingSaved);
+        ddd.getAuthors().add(Eric);
+        Eric.getBooks().add(ddd);
+
+        authorRepository.save(Eric);
         bookRepository.save(ddd);
+
+        Author Rod = new Author();
+        Eric.setFirstName("Rod");
+        Eric.setLastName("Washington");
+
+        Book noEJB = new Book();
+        noEJB.setTitle("J2ee Development without EJ8");
+        noEJB.setIsbn("789123");
+
+        noEJB.setPublisher(DomainPublishingSaved);
+        noEJB.getAuthors().add(Rod);
+        Rod.getBooks().add(noEJB);
+
+        authorRepository.save(Rod);
         bookRepository.save(noEJB);
+
 
         System.out.println("In bootstrap data");
         System.out.println("Author count: " + authorRepository.count());
